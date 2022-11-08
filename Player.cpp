@@ -117,9 +117,6 @@ void Player::increaseHealthLevel(int amount)
     }
 }
 
-
-
-
 Time Player::getLastHitTime()
 {
     return m_lastHit;
@@ -168,9 +165,19 @@ void Player::stopLeft()
     m_leftPressed = false;
 }
 
+void Player::moveLeft()
+{
+    m_leftPressed = true;
+}
+
 void Player::stopRight()
 {
     m_rightPressed = false;
+}
+
+void Player::moveRight()
+{
+    m_rightPressed = true;
 }
 
 void Player::stopUp()
@@ -178,7 +185,17 @@ void Player::stopUp()
     m_upPressed = false;
 }
 
+void Player::moveUp()
+{
+    m_upPressed = true;
+}
+
 void Player::stopDown()
 {
-    m_downPressed =false;
+    m_downPressed = false;
+}
+
+void Player::moveDown()
+{
+    m_downPressed = true;
 }
