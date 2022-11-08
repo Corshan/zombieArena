@@ -163,7 +163,7 @@ int main()
                 arena.left = 0;
                 arena.top = 0; 
 
-                int tileSize = 50; //we will update this later
+                int tileSize = 100; //we will update this later
 
                 //Spawn the player in the middle of the arena
                 player.spawn(arena,resolution,tileSize);
@@ -207,6 +207,7 @@ int main()
             Vector2f playerPosition(player.getCenter());
 
             //make the view centre around the player
+            mainView.setCenter(player.getCenter());
         }//end updating scene
 
         /*

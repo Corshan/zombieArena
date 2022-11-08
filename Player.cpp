@@ -1,4 +1,6 @@
 #include "Player.h"
+
+#include <iostream>
 #include <math.h>
 
 Player::Player()
@@ -91,6 +93,7 @@ void Player::update(float elapsedTime, Vector2i mousePosition)
     float angle = (atan2(mousePosition.y - m_resolution.y/2, mousePosition.x - m_resolution.x/2) * 180) /3.141;
 
     m_sprite.setRotation(angle);
+    std::cout << m_position.x << " : " << m_position.y << std::endl;
 
 }
 
