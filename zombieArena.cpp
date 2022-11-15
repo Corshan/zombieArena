@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "zombieArena.h"
 
 using namespace sf;
 
@@ -15,7 +16,7 @@ int main()
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
-    RenderWindow window(VideoMode(resolution.x,resolution.y), "Zombie Arena", Style::Fullscreen);
+    RenderWindow window(VideoMode(resolution.x,resolution.y), "Zombie Arena", Style::Default);
 
     //create an SFML Voiew for the main action
     View mainView(sf::FloatRect(0,0,resolution.x,resolution.y));
@@ -37,6 +38,13 @@ int main()
 
     //the boundaries of the arena
     IntRect arena;
+
+    //Create the Background
+    VertexArray background;
+
+    //load the texture for our background vertex array
+    Texture textureBackground;
+    textureBackground.loadFromFile("graphics/background_sheet.png");
 
     //the main game loop
     while (window.isOpen())
@@ -163,8 +171,9 @@ int main()
                 arena.left = 0;
                 arena.top = 0; 
 
-                int tileSize = 100; //we will update this later
-
+                //Pass the vertex array bt reference to the createbeackground funtion
+                int tileSize = createBackground(background, arena);
+                
                 //Spawn the player in the middle of the arena
                 player.spawn(arena,resolution,tileSize);
 
@@ -227,6 +236,9 @@ int main()
             //set the mainView to be displayed in the window
             //And draw everything related to it
             window.setView(mainView);
+
+            //Draw the background
+            window.draw(background, &textureBackground);
 
             //Draw the player
             window.draw(player.getSprite());
