@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "TextureHolder.h"
 #include <iostream>
 #include <math.h>
 
@@ -10,8 +10,7 @@ Player::Player()
     m_maxHealth = START_HEALTH;
 
     //asspciate a texture with the sprite
-    m_texture.loadFromFile("graphics/player.png");
-    m_sprite.setTexture(m_texture);
+    m_sprite = Sprite(TextureHolder::GetTexture("graphics/player.png"));
 
     //set origin of the sprite to the centre for smooth rotation
     m_sprite.setOrigin(25,25);
@@ -93,7 +92,6 @@ void Player::update(float elapsedTime, Vector2i mousePosition)
     float angle = (atan2(mousePosition.y - m_resolution.y/2, mousePosition.x - m_resolution.x/2) * 180) /3.141;
 
     m_sprite.setRotation(angle);
-    std::cout << m_position.x << " : " << m_position.y << std::endl;
 
 }
 

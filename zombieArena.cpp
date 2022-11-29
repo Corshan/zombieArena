@@ -1,11 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "zombieArena.h"
+#include "TextureHolder.h"
 
 using namespace sf;
 
+
 int main()
 {
+    TextureHolder holder;
     //The game will always be in one of 4 states
     enum class State {PAUSED, LEVELING_UP, GAME_OVER, PLAYING};
 
@@ -43,8 +46,12 @@ int main()
     VertexArray background;
 
     //load the texture for our background vertex array
-    Texture textureBackground;
-    textureBackground.loadFromFile("graphics/background_sheet.png");
+    Texture textureBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
+
+    //prepare for a horde of zombies
+    int numZombies=0; //numberat start of wave
+    int numZombiesAlive=0;//number to be killed
+    Zombie* zombies = nullptr;
 
     //the main game loop
     while (window.isOpen())
@@ -136,6 +143,14 @@ int main()
             if (event.key.code == Keyboard::Num1)
             {
                 state = State::PLAYING;
+
+                //create a horde of zombies
+                numZombies = 10;
+
+                //delete the previously allocated memory (if it exists)
+                delete[] zombies; //note use of delete[] - should use [] when deleting arrays from heap
+                zombies = createHorde(numZombies,arena);
+                numZombiesAlive =numZombies;
             }
 
             if (event.key.code == Keyboard::Num2)
@@ -217,6 +232,15 @@ int main()
 
             //make the view centre around the player
             mainView.setCenter(player.getCenter());
+
+            //loop through each zombie and update them if alive
+            for (int i =0; i< numZombies; i++)
+            {
+                if (zombies[i].isAlive())
+                {
+                    zombies[i].update(dt.asSeconds(), playerPosition);
+                }
+            }
         }//end updating scene
 
         /*
@@ -240,6 +264,12 @@ int main()
             //Draw the background
             window.draw(background, &textureBackground);
 
+            //draw the zombies
+            for (int i =0; i < numZombies; i++)
+            {
+                window.draw(zombies[i].getSprite());
+            }
+
             //Draw the player
             window.draw(player.getSprite());
         }
@@ -258,6 +288,9 @@ int main()
 
         window.display();
     }
+
+    //Delete the prviously alloacated memory (if it exists)
+    delete[] zombies;
     
     return 0;
 }
